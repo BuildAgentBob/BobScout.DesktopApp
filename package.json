@@ -1,0 +1,60 @@
+{
+  "name": "agent-bob-desktop",
+  "version": "1.0.0",
+  "description": "Agent Bob desktop API workflow recorder",
+  "main": "electron/main.js",
+  "author": "Agent Bob",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "node scripts/prepare-browsers.js && electron-builder --win portable nsis",
+    "build:portable": "node scripts/prepare-browsers.js && electron-builder --win portable",
+    "postinstall": "playwright install chromium"
+  },
+  "keywords": ["agent-bob", "electron", "playwright", "api-recorder"],
+  "license": "UNLICENSED",
+  "dependencies": {
+    "playwright": "^1.49.1"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "express": "^4.21.2"
+  },
+  "build": {
+    "appId": "com.agentbob.desktop",
+    "productName": "Agent Bob",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "lib/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/playwright/**/*",
+      "node_modules/playwright-core/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "browsers",
+        "to": "browsers",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": ["portable", "nsis"],
+      "icon": "public/assets/logo.png",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "AgentBob-${version}-portable.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "AgentBob-${version}-setup.exe"
+    }
+  }
+}
